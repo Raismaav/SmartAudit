@@ -1,4 +1,4 @@
 ## Librerias utilizadas
 - pytesseract
 - opencv-python
-- numpy
+- PyPDF2
