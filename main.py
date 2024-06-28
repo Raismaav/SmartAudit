@@ -3,6 +3,8 @@ import pytesseract
 import tkinter as tk
 from tkinter import messagebox
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 image = cv2.imread('test_image.png')
 # cv2.imshow('Image', image)
 # cv2.waitKey(0)
