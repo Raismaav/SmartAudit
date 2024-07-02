@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 import platform
 import debug_interface
+import re
 
 if platform.system() == 'Windows':
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -15,6 +16,16 @@ image = cv2.imread('test_image.png')
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 text = pytesseract.image_to_string(image)
 # print(text)
+
+# obtención de fecha
+# Define el patrón de la fecha
+date_pattern = '\d{2}/\d{2}/\d{4}'
+
+# Encuentra todas las fechas en text
+dates = re.findall(date_pattern, text)
+
+for date in dates:
+    print(date)
 
 debug_interface.debug_window(text)
 
