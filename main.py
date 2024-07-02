@@ -23,11 +23,10 @@ date_pattern = '\d{2}/\d{2}/\d{4}'
 
 # Encuentra todas las fechas en text
 dates = re.findall(date_pattern, text)
-
 for date in dates:
     print(date)
 
-debug_interface.debug_window(text)
+debug_interface.debug_window(text, dates[0])
 
 # def check_input():
 #     input_text = entry.get()

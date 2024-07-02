@@ -3,6 +3,7 @@ import tkinter as tk
 entry_widgets = []
 check_widgets = []
 text_info = ""
+date_info = ""
 
 
 def center_window(window, weight, height):
@@ -26,9 +27,10 @@ def verify_and_mark():
                 check_widgets[index].deselect()
 
 
-def debug_window(text=""):
-    global text_info
+def debug_window(text="", date=""):
+    global text_info, date_info
     text_info = text
+    date_info = date
     forms = tk.Tk()
     predefined_width = 600
     predefined_height = 300
