@@ -19,6 +19,14 @@ def verify_and_mark():
     for index, entry_widget in enumerate(entry_widgets):
         entry_text = entry_widget.get()
         if entry_text:  # Verifica si la cadena no está vacía
+            if index == 0:
+                if entry_text in date_info:
+                    print(f"Found {entry_text}")
+                    check_widgets[index].select()
+                else:
+                    print(entry_text)
+                    check_widgets[index].deselect()
+                continue
             if entry_text in text_info:
                 print(f"Found {entry_text}")
                 check_widgets[index].select()
