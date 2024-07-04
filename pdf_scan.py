@@ -1,6 +1,7 @@
+# Importa la librería PyPDF2 para leer archivos PDF
 import PyPDF2
 
-# Función para leer y imprimir texto de un archivo PDF
+# Función para leer e imprimir texto de un archivo PDF
 def read_pdf(file_path):
     try:
         # Abre el archivo PDF en modo lectura binaria
