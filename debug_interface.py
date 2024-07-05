@@ -1,5 +1,6 @@
 # Importamos las librerías necesarias
 import tkinter as tk
+from datetime import datetime
 
 # Definimos las variables globales
 entry_widgets = []
@@ -17,13 +18,17 @@ def center_window(window, weight, height):
 
 # Definimos una función para verificar y marcar los elementos
 def verify_and_mark():
-    print(text_info)
     for index, entry_widget in enumerate(entry_widgets):
         entry_text = entry_widget.get()
         if entry_text:  # Verifica si la cadena no está vacía
             if index == 0:
+                new_date = convert_date_format(date_info)
+                print(new_date)
                 if entry_text in date_info:
                     print(f"Found {entry_text}")
+                    check_widgets[index].select()
+                elif entry_text in new_date:
+                    print(f"Found {new_date}")
                     check_widgets[index].select()
                 else:
                     print(entry_text)
@@ -33,8 +38,19 @@ def verify_and_mark():
                 print(f"Found {entry_text}")
                 check_widgets[index].select()
             else:
-                print(entry_text)
+                print(f"Not found {entry_text}")
                 check_widgets[index].deselect()
+
+def convert_date_format(date):
+    formats = ["%m/%d/%Y", "%d/%m/%Y", "%Y/%m/%d"]  # Agrega el nuevo formato a la lista
+    for fmt in formats:
+        try:
+            date_object = datetime.strptime(date, fmt)
+            new_date = date_object.strftime("%d/%m/%Y") if fmt == "%m/%d/%Y" else date_object.strftime("%m/%d/%Y")
+            return new_date
+        except ValueError:
+            continue
+    raise ValueError(f"La fecha {date} no coincide con ninguno de los formatos esperados.")
 
 # Definimos una función para mostrar la ventana de depuración
 def debug_window(text="", date=""):
