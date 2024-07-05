@@ -4,11 +4,9 @@ import pytesseract
 import tkinter as tk
 from tkinter import messagebox
 
-
 # Configura el path de tesseract
 def pdf_to_img(pdf_file):
     return convert_from_path(pdf_file)
-
 
 # Convierte el pdf a imagenes
 def ocr_core(images):
@@ -17,12 +15,10 @@ def ocr_core(images):
         text += pytesseract.image_to_string(img)
     return text
 
-
 # Extrae el texto de las imagenes
 images = pdf_to_img('factura.pdf')
 text = ocr_core(images)
 print(text)
-
 
 # Verifica si el texto ingresado es correcto
 def check_input():
@@ -31,7 +27,6 @@ def check_input():
         messagebox.showinfo("Resultado", "Numero de factura correcto")
     else:
         messagebox.showinfo("Resultado", "Numero de factura incorrecto")
-
 
 # Crea la interfaz grafica
 root = tk.Tk()
