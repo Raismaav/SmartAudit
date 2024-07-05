@@ -104,13 +104,15 @@ def debug_window(text="", date=""):
         check = tk.Checkbutton(frame_window, state=tk.DISABLED, bg=background_color)
         check.grid(row=0, column=2, sticky="e")
         check_widgets.append(check)
-    # Definimos un botón para verificar
+    # Definimos un label y un entry para la referencia
     reference_label = tk.Label(frame, text="Referencia", bg=background_color_frame, fg="white", font=font)
     reference_label.grid(row=0, column=0, sticky="ew", padx=10)
     reference = tk.Entry(frame, bg=input_background, font=font)
     reference.grid(row=0, column=1, sticky="ew", padx=10)
+    # Definimos un botón para buscar
     search = tk.Button(frame, text="Buscar", width=10, font=font_button)
     search.grid(row=0, column=2, sticky="ew", padx=10)
+    # Definimos un botón para verificar
     verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=verify_and_mark, font=font_button)
     verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
     forms.mainloop()
