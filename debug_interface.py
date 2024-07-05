@@ -1,11 +1,13 @@
+# Importamos las librerías necesarias
 import tkinter as tk
 
+# Definimos las variables globales
 entry_widgets = []
 check_widgets = []
 text_info = ""
 date_info = ""
 
-
+# Definimos una función para centrar la ventana
 def center_window(window, weight, height):
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
@@ -13,7 +15,7 @@ def center_window(window, weight, height):
     y = (screen_height // 2) - (height // 2)
     window.geometry(f"{weight}x{height}+{x}+{y}")
 
-
+# Definimos una función para verificar y marcar los elementos
 def verify_and_mark():
     print(text_info)
     for index, entry_widget in enumerate(entry_widgets):
@@ -34,7 +36,7 @@ def verify_and_mark():
                 print(entry_text)
                 check_widgets[index].deselect()
 
-
+# Definimos una función para mostrar la ventana de depuración
 def debug_window(text="", date=""):
     global text_info, date_info
     text_info = text
@@ -42,16 +44,17 @@ def debug_window(text="", date=""):
     forms = tk.Tk()
     predefined_width = 600
     predefined_height = 300
-    forms.minsize(predefined_width, predefined_height)
-    forms.maxsize(predefined_width, predefined_height)
     forms.title("Auditoría de remesas")
+    # Configuramos la responsividad de la ventana y la centramos
+    forms.rowconfigure(0, weight=1)
+    forms.columnconfigure(0, weight=1)
     center_window(forms, predefined_width, predefined_height)
-
+    # Definimos un frame para colocar el botón de verificación
     frame = tk.Frame(forms)
     frame.config(width=predefined_width, height=60)
     frame.config(bg="#ff6b00")
     frame.pack(fill=tk.X)
-
+    # Definimos un array con los textos de las etiquetas
     label_texts = [
         "Fecha de presentación",
         "Cliente",
@@ -62,6 +65,7 @@ def debug_window(text="", date=""):
         "Factura"
     ]
     y_position = 70
+    # Iteramos sobre los textos de las etiquetas para colocarlas en la ventana
     for text in label_texts:
         label = tk.Label(forms, text=text, font=("Arial", 11))
         label.place(x=10, y=y_position)
@@ -72,7 +76,7 @@ def debug_window(text="", date=""):
         check.place(x=500, y=y_position)
         check_widgets.append(check)
         y_position += 33
-
+    # Definimos un botón para verificar
     verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=verify_and_mark)
     verify_button.place(x=430, y=17)
     forms.mainloop()
