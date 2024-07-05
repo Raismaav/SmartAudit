@@ -41,6 +41,7 @@ def verify_and_mark():
                 print(f"Not found {entry_text}")
                 check_widgets[index].deselect()
 
+# Definimos una función para convertir el formato de la fecha
 def convert_date_format(date):
     formats = ["%m/%d/%Y", "%d/%m/%Y", "%Y/%m/%d"]  # Agrega el nuevo formato a la lista
     for fmt in formats:
@@ -61,7 +62,7 @@ def debug_window(text="", date=""):
     forms = tk.Tk()
     # Definimos el título de la ventana y las dimensiones
     forms.title("Auditoría de remesas")
-    prefered_width = 600
+    prefered_width = 610
     prefered_height = 300
     # Configuramos la responsividad de la ventana y la centramos
     forms.rowconfigure(0, weight=1)
@@ -71,8 +72,7 @@ def debug_window(text="", date=""):
     background_color = "#ececec"
     background_color_frame = "#ff6b00"
     input_background = "#ffffff"
-    button_color = "#0E63C2"
-    font_button = ("Arial", 12, "bold")
+    font_button = ("Arial", 11)
     font = ("Arial", 11)
     # Configuramos el color de fondo de la ventana
     forms.configure(bg=background_color)
@@ -105,7 +105,12 @@ def debug_window(text="", date=""):
         check.grid(row=0, column=2, sticky="e")
         check_widgets.append(check)
     # Definimos un botón para verificar
-    verify_button = tk.Button(frame, text="Verificar", width=20, height=1,
-                              command=verify_and_mark, bg=button_color, font=font_button, fg="white")
-    verify_button.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
+    reference_label = tk.Label(frame, text="Referencia", bg=background_color_frame, fg="white", font=font)
+    reference_label.grid(row=0, column=0, sticky="ew", padx=10)
+    reference = tk.Entry(frame, bg=input_background, font=font)
+    reference.grid(row=0, column=1, sticky="ew", padx=10)
+    search = tk.Button(frame, text="Buscar", width=10, font=font_button)
+    search.grid(row=0, column=2, sticky="ew", padx=10)
+    verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=verify_and_mark, font=font_button)
+    verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
     forms.mainloop()
