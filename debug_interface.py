@@ -57,19 +57,30 @@ def debug_window(text="", date=""):
     global text_info, date_info
     text_info = text
     date_info = date
+    # Definimos una ventana de tkinter
     forms = tk.Tk()
-    predefined_width = 600
-    predefined_height = 300
+    # Definimos el título de la ventana y las dimensiones
     forms.title("Auditoría de remesas")
+    prefered_width = 600
+    prefered_height = 300
     # Configuramos la responsividad de la ventana y la centramos
     forms.rowconfigure(0, weight=1)
     forms.columnconfigure(0, weight=1)
-    center_window(forms, predefined_width, predefined_height)
+    center_window(forms, prefered_width, prefered_height)
+    # Esquema de colores y fuentes
+    background_color = "#ececec"
+    background_color_frame = "#ff6b00"
+    input_background = "#ffffff"
+    button_color = "#0E63C2"
+    font_button = ("Arial", 12, "bold")
+    font = ("Arial", 11)
+    # Configuramos el color de fondo de la ventana
+    forms.configure(bg=background_color)
     # Definimos un frame para colocar el botón de verificación
-    frame = tk.Frame(forms)
-    frame.config(width=predefined_width, height=60)
-    frame.config(bg="#ff6b00")
-    frame.pack(fill=tk.X)
+    frame = tk.Frame(forms, bg=background_color_frame)
+    frame.config(height=60)
+    frame.grid(row=0, sticky="ew")
+    frame.columnconfigure(0, weight=1)
     # Definimos un array con los textos de las etiquetas
     label_texts = [
         "Fecha de presentación",
@@ -80,19 +91,21 @@ def debug_window(text="", date=""):
         "Guia",
         "Factura"
     ]
-    y_position = 70
     # Iteramos sobre los textos de las etiquetas para colocarlas en la ventana
-    for text in label_texts:
-        label = tk.Label(forms, text=text, font=("Arial", 11))
-        label.place(x=10, y=y_position)
-        entry = tk.Entry(forms, width=50)
-        entry.place(x=200, y=y_position)
+    for i, text in enumerate(label_texts):
+        frame_window = tk.Frame(forms, bg=background_color)
+        frame_window.grid(row=i + 1, column=0, sticky="ew", padx=5, pady=5)
+        frame_window.columnconfigure(1, weight=1)
+        label = tk.Label(frame_window, text=text, font=font)
+        label.grid(row=0, column=0, sticky="w")
+        entry = tk.Entry(frame_window, width=50, bg=input_background, font=font)
+        entry.grid(row=0, column=1, sticky="ew")
         entry_widgets.append(entry)
-        check = tk.Checkbutton(forms, state=tk.DISABLED)
-        check.place(x=500, y=y_position)
+        check = tk.Checkbutton(frame_window, state=tk.DISABLED, bg=background_color)
+        check.grid(row=0, column=2, sticky="e")
         check_widgets.append(check)
-        y_position += 33
     # Definimos un botón para verificar
-    verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=verify_and_mark)
-    verify_button.place(x=430, y=17)
+    verify_button = tk.Button(frame, text="Verificar", width=20, height=1,
+                              command=verify_and_mark, bg=button_color, font=font_button, fg="white")
+    verify_button.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
     forms.mainloop()
