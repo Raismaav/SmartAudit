@@ -1,8 +1,6 @@
 # Importa librerias necesarias
 import cv2
 import pytesseract
-import tkinter as tk
-from tkinter import messagebox
 import platform
 import debug_interface
 import re
@@ -19,7 +17,8 @@ image = cv2.imread('test_image.png')
 # Convierte el espectro de colores de BGR a RGB y lo transforma a texto
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 text = pytesseract.image_to_string(image)
-# print(text)
+text = text.upper()
+print(text)
 
 # Obtención de fecha
 # Define el patrón de la fecha

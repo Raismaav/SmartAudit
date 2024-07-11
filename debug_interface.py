@@ -8,6 +8,7 @@ check_widgets = []
 text_info = ""
 date_info = ""
 
+
 # Definimos una función para centrar la ventana
 def center_window(window, weight, height):
     screen_width = window.winfo_screenwidth()
@@ -16,10 +17,12 @@ def center_window(window, weight, height):
     y = (screen_height // 2) - (height // 2)
     window.geometry(f"{weight}x{height}+{x}+{y}")
 
+
 # Definimos una función para verificar y marcar los elementos
 def verify_and_mark():
     for index, entry_widget in enumerate(entry_widgets):
-        entry_text = entry_widget.get()
+        entry_text = entry_widget.get().upper()
+        print(entry_text)
         if entry_text:  # Verifica si la cadena no está vacía
             if index == 0:
                 new_date = convert_date_format(date_info)
@@ -41,6 +44,7 @@ def verify_and_mark():
                 print(f"Not found {entry_text}")
                 check_widgets[index].deselect()
 
+
 # Definimos una función para convertir el formato de la fecha
 def convert_date_format(date):
     formats = ["%m/%d/%Y", "%d/%m/%Y", "%Y/%m/%d"]  # Agrega el nuevo formato a la lista
@@ -53,6 +57,7 @@ def convert_date_format(date):
             continue
     raise ValueError(f"La fecha {date} no coincide con ninguno de los formatos esperados.")
 
+
 # Definimos una función para mostrar la ventana de depuración
 def debug_window(text="", date=""):
     global text_info, date_info
@@ -63,7 +68,7 @@ def debug_window(text="", date=""):
     # Definimos el título de la ventana y las dimensiones
     forms.title("Auditoría de remesas")
     prefered_width = 610
-    prefered_height = 300
+    prefered_height = 320
     # Configuramos la responsividad de la ventana y la centramos
     forms.rowconfigure(0, weight=1)
     forms.columnconfigure(0, weight=1)
@@ -86,9 +91,11 @@ def debug_window(text="", date=""):
         "Fecha de presentación",
         "Cliente",
         "Domicilio",
-        "Ciudad/Edo",
+        "Ciudad",
+        "Estado",
         "RFC",
         "Guia",
+        "Piezas",
         "Factura"
     ]
     # Iteramos sobre los textos de las etiquetas para colocarlas en la ventana
