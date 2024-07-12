@@ -31,7 +31,7 @@ class OCR:
             print("No hay imágenes para procesar.")
             return None
         self.text = self.ocr_core(self.images)
-        return self.text
+        return self.text.upper()
 
     def is_readable(self):
         """Verifica si fue posible extraer texto."""
