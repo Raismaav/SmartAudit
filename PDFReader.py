@@ -7,6 +7,7 @@ class PDFReader:
     Attributes:
         file_path (str): The path to the PDF file to be read.
         text (str): Extracted text from the PDF file.
+        is_readable (bool): Indicates if the file is readable.
     """
 
     def __init__(self, file_path):
@@ -17,6 +18,10 @@ class PDFReader:
         """
         self.file_path = file_path
         self.text = None
+        self.is_readable = True  # Assume the file is readable initially
+
+        if not file_path.endswith('.pdf'):
+            self.is_readable = False  # Mark as unreadable if not a PDF
 
     def read_pdf(self):
         """
@@ -24,8 +29,8 @@ class PDFReader:
 
         :return: The extracted text in uppercase if successful, None otherwise.
         """
-        if self.is_encrypted():
-            print("PDF is encrypted. Unable to read without a password.")
+        if not self.is_readable or self.is_encrypted():
+            print("PDF is encrypted or file is not readable.")
             return None
 
         try:
@@ -43,6 +48,9 @@ class PDFReader:
 
         :return: True if the file is encrypted, False otherwise.
         """
+        if not self.is_readable:
+            return False  # Return False immediately if file is not readable
+
         with open(self.file_path, 'rb') as file:
             reader = PyPDF2.PdfFileReader(file)
             return reader.isEncrypted
@@ -54,6 +62,9 @@ class PDFReader:
         :param reader: A PyPDF2.PdfFileReader object of the PDF file.
         :return: Extracted text as a string.
         """
+        if not self.is_readable:
+            return ""  # Return empty string if file is not readable
+
         text = ""
         for page_num in range(reader.getNumPages()):
             page = reader.getPage(page_num)
@@ -61,11 +72,3 @@ class PDFReader:
             if page_text:
                 text += page_text + "\n"
         return text
-
-    def is_readable(self):
-        """
-        Verifies if the PDF file is readable by checking if text was extracted.
-
-        :return: True if text was extracted, False otherwise.
-        """
-        return bool(self.text)

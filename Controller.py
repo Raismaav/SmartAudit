@@ -1,11 +1,11 @@
 from PDFReader import PDFReader
 from OCR import OCR
 
-archivo = 'files/test.pdf'
+archivo = 'files/test_image.png'
 # Reemplaza 'ruta/a/tu/archivo.pdf' con la ruta real a tu archivo PDF
 pdf_reader = PDFReader(archivo)
 texto = pdf_reader.read_pdf()
-if pdf_reader.is_readable():
+if pdf_reader.is_readable:
     print("El PDF es legible. Aquí está el texto:")
     print(texto)
 else:
