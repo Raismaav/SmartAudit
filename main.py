@@ -10,7 +10,7 @@ if platform.system() == 'Windows':
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Carga la imagen
-image = cv2.imread('test_image.png')
+image = cv2.imread('files/test_image.png')
 # cv2.imshow('Image', image)
 # cv2.waitKey(0)
 

@@ -1,7 +1,7 @@
 from PDFReader import PDFReader
 from OCR import OCR
 
-archivo = 'test.pdf'
+archivo = 'files/test.pdf'
 # Reemplaza 'ruta/a/tu/archivo.pdf' con la ruta real a tu archivo PDF
 pdf_reader = PDFReader(archivo)
 texto = pdf_reader.read_pdf()
