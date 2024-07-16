@@ -99,9 +99,9 @@ def debug_window(text="", date=""):
         "Factura"
     ]
     # Iteramos sobre los textos de las etiquetas para colocarlas en la ventana
-    for i, text in enumerate(label_texts):
+    for index, text in enumerate(label_texts):
         frame_window = tk.Frame(forms, bg=background_color)
-        frame_window.grid(row=i + 1, column=0, sticky="ew", padx=5, pady=5)
+        frame_window.grid(row=index + 1, column=0, sticky="ew", padx=5, pady=5)
         frame_window.columnconfigure(1, weight=1)
         label = tk.Label(frame_window, text=text, font=font)
         label.grid(row=0, column=0, sticky="w")

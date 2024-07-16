@@ -2,7 +2,7 @@
 import cv2
 import pytesseract
 import platform
-import debug_interface
+from legacy_code import debug_interface
 import re
 
 # Configura el path de tesseract en Windows
@@ -10,7 +10,7 @@ if platform.system() == 'Windows':
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Carga la imagen
-image = cv2.imread('files/test_image.png')
+image = cv2.imread('../files/test_image.png')
 # cv2.imshow('Image', image)
 # cv2.waitKey(0)
 
