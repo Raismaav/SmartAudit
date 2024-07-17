@@ -1,15 +1,43 @@
 import tkinter as tk
 
-
 class DebugView:
+    """
+    A class to create and manage the GUI for debugging audits.
+
+    This class is responsible for setting up the user interface, which includes input fields for user data,
+    labels for each input field, and check buttons to indicate the verification status of each input.
+    It dynamically creates the UI elements based on the provided labels.
+
+    Attributes:
+        verify_function (function): A callback function to be called when the "Verify" button is clicked.
+        label_texts (list of str): A list of labels for the input fields.
+        entry_widgets (list of tkinter.Entry): A list to store the entry widgets created for user inputs.
+        check_widgets (list of tkinter.Checkbutton): A list to store the check buttons corresponding to each entry widget.
+    """
+
     def __init__(self, verify_function, label_texts):
+        """
+        Initializes the DebugView with a verification function and a list of label texts.
+
+        Parameters:
+            verify_function (function): The function to call for verification.
+            label_texts (list of str): The texts for the labels of the input fields.
+        """
         self.verify_function = verify_function
-        self.label_texts = label_texts  # Guardar label_texts como variable de instancia
+        self.label_texts = label_texts  # Store label_texts as an instance variable
         self.entry_widgets = []
         self.check_widgets = []
         self.setup_ui()
 
     def center_window(self, window, width, height):
+        """
+        Centers the window on the screen.
+
+        Parameters:
+            window (tk.Tk): The window to be centered.
+            width (int): The width of the window.
+            height (int): The height of the window.
+        """
         screen_width = window.winfo_screenwidth()
         screen_height = window.winfo_screenheight()
         x = (screen_width // 2) - (width // 2)
@@ -17,6 +45,12 @@ class DebugView:
         window.geometry(f"{width}x{height}+{x}+{y}")
 
     def setup_ui(self):
+        """
+        Sets up the user interface for the DebugView window.
+
+        This method initializes the main window and its components, including labels, entry fields, and checkbuttons
+        for each label text provided. It also configures the window's appearance and layout.
+        """
         forms = tk.Tk()
         forms.title("Auditoría de remesas")
         preferred_width = 610
@@ -37,7 +71,6 @@ class DebugView:
         frame.grid(row=0, sticky="ew")
         frame.columnconfigure(0, weight=1)
 
-        # Utilizar self.label_texts aquí
         for index, text in enumerate(self.label_texts):
             frame_window = tk.Frame(forms, bg=background_color)
             frame_window.grid(row=index + 1, column=0, sticky="ew", padx=5, pady=5)
@@ -59,7 +92,8 @@ class DebugView:
         search = tk.Button(frame, text="Buscar", width=10, font=font_button)
         search.grid(row=0, column=2, sticky="ew", padx=10)
 
-        verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=self.verify_function, font=font_button)
+        verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=self.verify_function,
+                                  font=font_button)
         verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
 
         forms.mainloop()
