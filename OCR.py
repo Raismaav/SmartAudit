@@ -14,7 +14,7 @@ class OCR:
         """
         self.file_path = file_path
         self.text = None
-        self.images = None
+        self.__images = None
         if self.file_path.endswith('.pdf'):
             try:
                 self.images = self.pdf_to_img(self.file_path)

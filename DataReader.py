@@ -3,7 +3,7 @@ from OCR import OCR
 import os
 
 
-class FileController:
+class DataReader:
     """
     A controller class to handle file processing, determining whether to use PDFReader or OCR
     based on the file extension, and extracting text from the file.
@@ -68,5 +68,5 @@ class FileController:
 
 # Usage of the controller
 file_path = 'files/factura.pdf'  # Replace with the actual file path
-controller = FileController(file_path)
+controller = DataReader(file_path)
 controller.process_file()
