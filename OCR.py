@@ -17,12 +17,12 @@ class OCR:
         self.__images = None
         if self.file_path.endswith('.pdf'):
             try:
-                self.images = self.pdf_to_img(self.file_path)
+                self.__images = self.pdf_to_img(self.file_path)
             except Exception as e:
                 print(f"Error converting PDF to images: {e}")
-                self.images = []
+                self.__images = []
         else:
-            self.images = [self.file_path]
+            self.__images = [self.file_path]
 
     def pdf_to_img(self, pdf_file):
         """
@@ -58,10 +58,10 @@ class OCR:
 
         :return: The extracted text in uppercase.
         """
-        if not self.images:
+        if not self.__images:
             print("No images to process.")
             return None
-        self.text = self.ocr_core(self.images)
+        self.text = self.ocr_core(self.__images)
         return self.text.upper()
 
     def is_readable(self):

@@ -1,4 +1,5 @@
 import tkinter as tk
+from DebugAudit import DebugAudit
 
 class DebugView:
     """
@@ -15,7 +16,7 @@ class DebugView:
         check_widgets (list of tkinter.Checkbutton): A list to store the check buttons corresponding to each entry widget.
     """
 
-    def __init__(self, verify_function, label_texts):
+    def __init__(self, label_texts, debug_audit: DebugAudit):
         """
         Initializes the DebugView with a verification function and a list of label texts.
 
@@ -23,11 +24,18 @@ class DebugView:
             verify_function (function): The function to call for verification.
             label_texts (list of str): The texts for the labels of the input fields.
         """
-        self.verify_function = verify_function
+
         self.label_texts = label_texts  # Store label_texts as an instance variable
         self.entry_widgets = []
         self.check_widgets = []
+        self.debug_audit = debug_audit
         self.setup_ui()
+
+    def verify_entries(self):
+        """
+        A wrapper method to call the verify_and_mark method of debug_audit with the necessary parameters.
+        """
+        self.debug_audit.verify_and_mark(self.entry_widgets, self.check_widgets)
 
     def center_window(self, window, width, height):
         """
@@ -92,11 +100,7 @@ class DebugView:
         search = tk.Button(frame, text="Buscar", width=10, font=font_button)
         search.grid(row=0, column=2, sticky="ew", padx=10)
 
-        verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=self.verify_function,
-                                  font=font_button)
+        verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=self.verify_entries, font=font_button)
         verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
 
         forms.mainloop()
-
-
-
