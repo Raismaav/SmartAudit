@@ -19,14 +19,26 @@ class DataReader:
         self.text = None
         self.file_path = file_path
 
+    import re
+
     def get_date(self):
         """
         Searches for the first date in the extracted text using a regular expression and returns it.
+        The method now supports dates separated by slashes, dashes, dots, spaces, and months in English and Spanish.
 
         :return: The first date found in the text or None if no date is found.
         """
-        date_pattern = r'\d{2}/\d{2}/\d{4}'
-        dates = re.findall(date_pattern, self.text)
+        date_patterns = [
+            r'\d{2}[/-]\d{2}[/-]\d{4}',  # DD-MM-YYYY or DD/MM/YYYY
+            r'\d{2}\.\d{2}\.\d{4}',  # DD.MM.YYYY
+            r'\d{2} \d{2} \d{4}',  # DD MM YYYY
+            # English and Spanish month names, abbreviated and full
+            r'\d{1,2}(?:st|nd|rd|th)? (?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|ene(?:ro)?|feb(?:rero)?|mar(?:zo)?|abr(?:il)?|may(?:o)?|jun(?:io)?|jul(?:io)?|ago(?:sto)?|sep(?:tiembre)?|oct(?:ubre)?|nov(?:iembre)?|dic(?:iembre)?) \d{4}',
+            r'\d{1,2} de (?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre) de \d{4}'
+        ]
+        date_pattern = '|'.join(date_patterns)  # Combine all patterns
+
+        dates = re.findall(date_pattern, self.text, re.IGNORECASE)
         if dates:
             return dates[0]
         else:
