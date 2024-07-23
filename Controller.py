@@ -31,7 +31,20 @@ class Controller:
             "Estado",
             "RFC",
             "Guia",
-            "Factura"
+            "Factura",
+            "Codigo postal",
+            "Proveedor",
+            "Numero de parte",
+            "Descripción",
+            "Cantidad",
+            "medida",
+            "Fraccion",
+            "Peso unitario",
+            "Peso total",
+            "Peso bruto",
+            "Valor unitario",
+            "Valor total",
+            "Incoterm"
         ]
 
     def run(self):

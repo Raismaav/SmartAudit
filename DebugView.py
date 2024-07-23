@@ -62,7 +62,7 @@ class DebugView:
         forms = tk.Tk()
         forms.title("Auditoría de remesas")
         preferred_width = 610
-        preferred_height = 320
+        preferred_height = 760
         forms.rowconfigure(0, weight=1)
         forms.columnconfigure(0, weight=1)
         self.center_window(forms, preferred_width, preferred_height)
