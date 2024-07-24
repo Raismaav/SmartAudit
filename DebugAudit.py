@@ -21,6 +21,13 @@ class DebugAudit:
         self.text_info = text_info
         self.date_info = date_info
 
+    def __store_widget_values(self, entry_widgets):
+        values = []  # Step 1: Initialize the list
+        for widget in entry_widgets:  # Step 2: Iterate over widgets
+            value = widget.get()  # Step 3: Get the widget's text value
+            values.append(value)  # Step 4: Append the value to the list
+        return values  # Step 5: Return the list of values
+
     def verify_and_mark(self, entry_widgets, check_widgets):
         """
         Verifies each entry widget's text against the stored text and date information. Marks the corresponding check widget based on the verification result.
@@ -50,6 +57,7 @@ class DebugAudit:
                 else:
                     print(f"Not found {entry_text}")
                     check_widgets[index].deselect()
+        print(self.__store_widget_values(entry_widgets))
 
     @staticmethod
     def convert_date_format(date):

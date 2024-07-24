@@ -51,10 +51,6 @@ class Controller:
         """
         Processes the data file and initializes the DebugView.
         """
-        from DataReader import DataReader
-        from DebugAudit import DebugAudit
-        from DebugView import DebugView
-
         reader = DataReader(self.file_path)
         reader.process_file()
         debug_audit = DebugAudit(reader.get_text(), reader.get_date())
