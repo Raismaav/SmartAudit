@@ -1,8 +1,9 @@
 from pdf2image import convert_from_path
 import pytesseract
+import platform
 import os
 
-
+ 
 class OCR:
     def __init__(self, file_path):
         """
@@ -12,6 +13,11 @@ class OCR:
 
         :param file_path: Path to the file to be processed.
         """
+
+        # Configura el path de tesseract en Windows
+        if platform.system() == 'Windows':
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
         self.file_path = file_path
         self.text = None
         self.__images = None
