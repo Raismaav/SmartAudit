@@ -14,9 +14,10 @@ class OCR:
         :param file_path: Path to the file to be processed.
         """
 
-        # Configura el path de tesseract en Windows
+        # Configure the Tesseract path on Windows
         if platform.system() == 'Windows':
-            pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Users\rmagana\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+            # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
         self.file_path = file_path
         self.text = None

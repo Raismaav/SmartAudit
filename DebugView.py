@@ -27,6 +27,7 @@ class DebugView:
 
         self.label_texts = label_texts  # Store label_texts as an instance variable
         self.entry_widgets = []
+        self.scan_widgets = []
         self.check_widgets = []
         self.debug_audit = debug_audit
         self.setup_ui()
@@ -73,34 +74,38 @@ class DebugView:
         font_button = ("Arial", 11)
         font = ("Arial", 11)
 
-        forms.configure(bg=background_color)
-        frame = tk.Frame(forms, bg=background_color_frame)
-        frame.config(height=60)
-        frame.grid(row=0, sticky="ew")
-        frame.columnconfigure(0, weight=1)
+        # Create header frame
+        header_frame = tk.Frame(forms, bg=background_color_frame)
+        header_frame.grid(row=0, column=0, sticky="new")
+        header_frame.columnconfigure([0, 1, 2, 3], weight=1)
+
+        reference_label = tk.Label(header_frame, text="Referencia", bg=background_color_frame, fg="white", font=font)
+        reference_label.grid(row=0, column=0, sticky="ew", padx=10)
+        reference = tk.Entry(header_frame, bg=input_background, font=font)
+        reference.grid(row=0, column=1, sticky="ew", padx=10)
+
+        search = tk.Button(header_frame, text="Buscar", width=10, font=font_button)
+        search.grid(row=0, column=2, sticky="ew", padx=10)
+
+        verify_button = tk.Button(header_frame, text="Verificar", width=20, height=1, command=self.verify_entries,
+                                  font=font_button)
+        verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
+
 
         for index, text in enumerate(self.label_texts):
             frame_window = tk.Frame(forms, bg=background_color)
             frame_window.grid(row=index + 1, column=0, sticky="ew", padx=5, pady=5)
             frame_window.columnconfigure(1, weight=1)
-            label = tk.Label(frame_window, text=text, font=font)
+            label = tk.Label(frame_window, width=16, text=text, font=font)
             label.grid(row=0, column=0, sticky="w")
-            entry = tk.Entry(frame_window, width=50, bg=input_background, font=font)
+            entry = tk.Entry(frame_window, width=32, bg=input_background, font=font)
             entry.grid(row=0, column=1, sticky="ew")
             self.entry_widgets.append(entry)
+            scan = tk.Entry(frame_window, width=32, bg=input_background, font=font)
+            scan.grid(row=0, column=2, sticky="ew")
+            self.scan_widgets.append(scan)
             check = tk.Checkbutton(frame_window, state=tk.DISABLED, bg=background_color)
-            check.grid(row=0, column=2, sticky="e")
+            check.grid(row=0, column=3, sticky="e")
             self.check_widgets.append(check)
-
-        reference_label = tk.Label(frame, text="Referencia", bg=background_color_frame, fg="white", font=font)
-        reference_label.grid(row=0, column=0, sticky="ew", padx=10)
-        reference = tk.Entry(frame, bg=input_background, font=font)
-        reference.grid(row=0, column=1, sticky="ew", padx=10)
-
-        search = tk.Button(frame, text="Buscar", width=10, font=font_button)
-        search.grid(row=0, column=2, sticky="ew", padx=10)
-
-        verify_button = tk.Button(frame, text="Verificar", width=20, height=1, command=self.verify_entries, font=font_button)
-        verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
 
         forms.mainloop()

@@ -41,16 +41,12 @@ class DataReader:
         if file_type == '.pdf':
             pdf_reader = PDFReader(self.file_path)
             self.text = pdf_reader.read_pdf()
-            if pdf_reader.is_readable:
-                self.__print_result(self.text)
-            else:
+            if not pdf_reader.is_readable:
                 self.__print_error()
         elif file_type in ['.png', '.jpg', '.jpeg']:
             ocr_reader = OCR(self.file_path)
             self.text = ocr_reader.read_text()
-            if ocr_reader.is_readable():
-                self.__print_result(self.text)
-            else:
+            if not ocr_reader.is_readable():
                 self.__print_error()
         else:
             print("Unsupported file type.")
@@ -72,14 +68,16 @@ class DataReader:
         _, extension = os.path.splitext(self.file_path)
         return extension
 
-    def __print_result(self, text):
+    def print_result(self):
         """
         Prints the extracted text from the file.
-
-        :param text: The extracted text.
         """
-        print("The file is readable. Here is the extracted text:")
-        print(text)
+        if self.text:
+            print("The file is readable. Here is the extracted text:")
+            print(self.text)
+        else:
+            self.__print_error()
+
 
     def __print_error(self):
         """
