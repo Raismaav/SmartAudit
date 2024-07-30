@@ -1,5 +1,5 @@
 from DebugView import DebugView
-from DebugAudit import DebugAudit
+from Auditor import Auditor
 from DataReader import DataReader
 
 
@@ -53,5 +53,5 @@ class Controller:
         """
         reader = DataReader(self.file_path)
         reader.process_file()
-        debug_audit = DebugAudit(reader.get_text(), reader.get_date())
-        DebugView(self.label_texts, debug_audit)
+        auditor = Auditor(reader.get_text(), reader.get_date())
+        DebugView(self.label_texts, auditor)

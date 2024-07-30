@@ -1,5 +1,5 @@
 import tkinter as tk
-from DebugAudit import DebugAudit
+from Auditor import Auditor
 
 class DebugView:
     """
@@ -16,7 +16,7 @@ class DebugView:
         check_widgets (list of tkinter.Checkbutton): A list to store the check buttons corresponding to each entry widget.
     """
 
-    def __init__(self, label_texts, debug_audit: DebugAudit):
+    def __init__(self, label_texts, auditor: Auditor):
         """
         Initializes the DebugView with a verification function and a list of label texts.
 
@@ -29,14 +29,21 @@ class DebugView:
         self.entry_widgets = []
         self.scan_widgets = []
         self.check_widgets = []
-        self.debug_audit = debug_audit
+        self.auditor = auditor
         self.setup_ui()
 
-    def verify_entries(self):
+    def __verify_and_mark(self):
         """
-        A wrapper method to call the verify_and_mark method of debug_audit with the necessary parameters.
+        Creates a dictionary pairing label texts with their corresponding entry widget values.
         """
-        self.debug_audit.verify_and_mark(self.entry_widgets, self.check_widgets)
+        entries = {label: entry.get() for label, entry in zip(self.label_texts, self.entry_widgets)}
+        results = self.auditor.audit_values_in_text(entries)
+        for index, result in enumerate(results):
+            if result:
+                self.check_widgets[index].select()
+            else:
+                self.check_widgets[index].deselect()
+
 
     def center_window(self, window, width, height):
         """
@@ -87,7 +94,7 @@ class DebugView:
         search = tk.Button(header_frame, text="Buscar", width=10, font=font_button)
         search.grid(row=0, column=2, sticky="ew", padx=10)
 
-        verify_button = tk.Button(header_frame, text="Verificar", width=20, height=1, command=self.verify_entries,
+        verify_button = tk.Button(header_frame, text="Verificar", width=20, height=1, command=self.__verify_and_mark,
                                   font=font_button)
         verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
 
