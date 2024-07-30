@@ -23,29 +23,29 @@ class Controller:
             file_path (str, optional): The path to the data file. Defaults to None.
         """
         self.file_path = file_path
-        self.label_texts = [
-            "Fecha de presentación",
-            "Cliente",
-            "Domicilio",
-            "Ciudad",
-            "Estado",
-            "RFC",
-            "Guia",
-            "Factura",
-            "Codigo postal",
-            "Proveedor",
-            "Numero de parte",
-            "Descripción",
-            "Cantidad",
-            "medida",
-            "Fraccion",
-            "Peso unitario",
-            "Peso total",
-            "Peso bruto",
-            "Valor unitario",
-            "Valor total",
-            "Incoterm"
-        ]
+        self.dict_texts = {
+            "date": "Fecha de presentación",
+            "client": "Cliente",
+            "address": "Domicilio",
+            "city": "Ciudad",
+            "state": "Estado",
+            "rfc": "RFC",
+            "guide": "Guia",
+            "invoice": "Factura",
+            "postal_code": "Codigo postal",
+            "supplier": "Proveedor",
+            "part_number": "Numero de parte",
+            "description": "Descripción",
+            "quantity": "Cantidad",
+            "measure": "medida",
+            "fraction": "Fraccion",
+            "unit_weight": "Peso unitario",
+            "total_weight": "Peso total",
+            "gross_weight": "Peso bruto",
+            "unit_value": "Valor unitario",
+            "total_value": "Valor total",
+            "incoterm": "Incoterm"
+        }
 
     def run(self):
         """
@@ -54,4 +54,4 @@ class Controller:
         reader = DataReader(self.file_path)
         reader.process_file()
         auditor = Auditor(reader.get_text(), reader.get_date())
-        DebugView(self.label_texts, auditor)
+        DebugView(self.dict_texts, auditor)

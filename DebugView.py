@@ -16,7 +16,7 @@ class DebugView:
         check_widgets (list of tkinter.Checkbutton): A list to store the check buttons corresponding to each entry widget.
     """
 
-    def __init__(self, label_texts, auditor: Auditor):
+    def __init__(self, dict_texts, auditor: Auditor):
         """
         Initializes the DebugView with a verification function and a list of label texts.
 
@@ -25,7 +25,8 @@ class DebugView:
             label_texts (list of str): The texts for the labels of the input fields.
         """
 
-        self.label_texts = label_texts  # Store label_texts as an instance variable
+        self.keys = list(dict_texts.keys())
+        self.label_texts = list(dict_texts.values())
         self.entry_widgets = []
         self.scan_widgets = []
         self.check_widgets = []
@@ -36,7 +37,7 @@ class DebugView:
         """
         Creates a dictionary pairing label texts with their corresponding entry widget values.
         """
-        entries = {label: entry.get() for label, entry in zip(self.label_texts, self.entry_widgets)}
+        entries = {label: entry.get().upper() for label, entry in zip(self.keys, self.entry_widgets)}
         results = self.auditor.audit_values_in_text(entries)
         for index, result in enumerate(results):
             if result:
