@@ -2,7 +2,23 @@ from datetime import datetime
 import re
 
 class Auditor:
+    """
+    Auditor class for verifying text and date entries against provided data.
+
+    Attributes:
+        text (str): The text data to be audited.
+        data_dict (dict): The dictionary data to be audited.
+        date (str): The date to be used for verification.
+    """
+
     def __init__(self, data, date):
+        """
+        Initializes the Auditor with data and a date.
+
+        Parameters:
+            data (str or dict): The data to be audited. Can be a string or a dictionary.
+            date (str): The date to be used for verification.
+        """
         if isinstance(data, str):
             self.text = data
             self.data_dict = None
@@ -14,6 +30,15 @@ class Auditor:
         self.date = date
 
     def audit_values_in_text(self, check_dict):
+        """
+        Audits the values in the provided dictionary against the text data.
+
+        Parameters:
+            check_dict (dict): The dictionary containing the values to be audited.
+
+        Returns:
+            list of bool: A list of boolean values indicating the audit results for each entry.
+        """
         if not isinstance(check_dict, dict):
             raise ValueError("Parameter must be a dictionary.")
         if self.text is None:
@@ -21,11 +46,7 @@ class Auditor:
         results = []
         for key, value in check_dict.items():
             if key == "date":  # Special handling for the date entry.
-                new_date = self.__convert_date_format(self.date)
-                if value in self.date or value in new_date:
-                    results.append(True)
-                else:
-                    results.append(False)
+                results.append(self.__verify_date(value))
             else:  # Verification for text entries.
                 results.append(self.__verify_entry(value))
         return results
@@ -46,26 +67,56 @@ class Auditor:
         pattern = r'\b' + re.escape(entry) + r'\b'
         return bool(re.search(pattern, self.text, re.IGNORECASE))
 
-    @staticmethod
-    def __convert_date_format(date):
+    def __parse_date(self, date_str):
         """
-        Converts the given date into a different format based on predefined formats.
+        Parses the given date string into a datetime object.
 
         Parameters:
-            date (str): The date string to be converted.
+            date_str (str): The date string to be parsed.
 
         Returns:
-            str: The date in a new format if conversion is successful.
+            datetime: The parsed datetime object.
 
         Raises:
-            ValueError: If the date does not match any of the expected formats.
+            ValueError: If the date string does not match any of the expected formats.
         """
-        formats = ["%m/%d/%Y", "%d/%m/%Y", "%Y/%m/%d"]
-        for fmt in formats:
+        date_formats = [
+            "%m/%d/%Y",  # MM/DD/YYYY
+            "%d/%m/%Y",  # DD/MM/YYYY
+            "%Y/%m/%d",  # YYYY/MM/DD
+            "%d-%m-%Y",  # DD-MM-YYYY
+            "%m-%d-%Y",  # MM-DD-YYYY
+            "%Y-%m-%d",  # YYYY-MM-DD
+            "%Y.%m.%d",  # YYYY.MM.DD
+            "%B %d, %Y",  # Month DD, YYYY (e.g., May 13, 2024)
+            "%d %B %Y",  # DD Month YYYY (e.g., 13 May 2024)
+            "%d-%b-%Y",  # DD-Mon-YYYY (e.g., 13-May-2024)
+            "%b %d, %Y",  # Mon DD, YYYY (e.g., May 13, 2024)
+            "%d %b %y",  # DD Mon YY (e.g., 13 May 24)
+            "%d/%m/%y",  # DD/MM/YY
+            "%m/%d/%y",  # MM/DD/YY
+        ]
+
+        for date_format in date_formats:
             try:
-                date_object = datetime.strptime(date, fmt)
-                new_date = date_object.strftime("%d/%m/%Y") if fmt == "%m/%d/%Y" else date_object.strftime("%m/%d/%Y")
-                return new_date
+                return datetime.strptime(date_str, date_format)
             except ValueError:
                 continue
-        raise ValueError(f"La fecha {date} no coincide con ninguno de los formatos esperados.")
+
+        raise ValueError(f"Formato de fecha no reconocido: {date_str}")
+
+    def __verify_date(self, date):
+        """
+        Verifies if the given date matches the initialized date.
+
+        Parameters:
+            date (str): The date to be verified.
+
+        Returns:
+            bool: True if the dates match, False otherwise.
+        """
+        try:
+            parsed_date = self.__parse_date(date)
+            return self.__parse_date(self.date) == parsed_date
+        except ValueError:
+            return False
