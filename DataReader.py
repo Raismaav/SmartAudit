@@ -25,7 +25,7 @@ class DataReader:
 
         :return: The first date found in the text or None if no date is found.
         """
-        date_pattern = r'\d{2}/\d{2}/\d{4}'
+        date_pattern = r'\b(?:\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d{4}[-/]\d{1,2}[-/]\d{1,2})\b'
         dates = re.findall(date_pattern, self.text)
         if dates:
             return dates[0]

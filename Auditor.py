@@ -7,7 +7,6 @@ class Auditor:
 
     Attributes:
         text (str): The text data to be audited.
-        data_dict (dict): The dictionary data to be audited.
         date (str): The date to be used for verification.
     """
 
@@ -16,17 +15,14 @@ class Auditor:
         Initializes the Auditor with data and a date.
 
         Parameters:
-            data (str or dict): The data to be audited. Can be a string or a dictionary.
+            data (str): The data to be audited. Can be a string or a dictionary.
             date (str): The date to be used for verification.
         """
+        self.search_results = {}
         if isinstance(data, str):
             self.text = data
-            self.data_dict = None
-        elif isinstance(data, dict):
-            self.data_dict = data
-            self.text = None
         else:
-            raise ValueError("Invalid data type. Expected str or dict.")
+            raise ValueError("Invalid data type. Expected str")
         self.date = date
 
     def audit_values_in_text(self, check_dict):
@@ -46,14 +42,14 @@ class Auditor:
         results = []
         for key, value in check_dict.items():
             if key == "date":  # Special handling for the date entry.
-                results.append(self.__verify_date(value))
+                results.append(self.__verify_date(value, key))
             else:  # Verification for text entries.
-                results.append(self.__verify_entry(value))
+                results.append(self.__verify_entry(value, key))
         return results
 
-    def __verify_entry(self, entry):
+    def __verify_entry(self, entry, key):
         """
-        Verifies if the entry is a complete word in the given text.
+        Verifies if the entry is a complete word in the given text and prints the closest complete word.
 
         Parameters:
             entry (str): The entry to be verified.
@@ -62,10 +58,77 @@ class Auditor:
             bool: True if the entry is found as a complete word in the text, False otherwise.
         """
         if not entry:  # Check for empty string
+            self.search_results[key] = 'No matches found'
             return False
-        # Adjust the pattern to handle special characters and spaces
+
+        # Find all words in the text
+        words = re.findall(r'\b\w+\b', self.text.upper())
+
+        # Find the closest match
+        closest_word = None
+        min_distance = float('inf')
+        for word in words:
+            distance = self.__levenshtein_distance(entry.upper(), word)
+            if distance < min_distance:
+                min_distance = distance
+                closest_word = word
+
+        # Print the closest word
+        if closest_word:
+            self.search_results[key] = closest_word
+        else:
+            self.search_results[key] = 'No matches found'
+
+        # Check if the entry is a complete word in the text
         pattern = r'\b' + re.escape(entry) + r'\b'
-        return bool(re.search(pattern, self.text, re.IGNORECASE))
+        return bool(re.search(pattern, self.text.upper(), re.IGNORECASE))
+
+    def __levenshtein_distance(self, s1, s2):
+        """
+        Computes the Levenshtein distance between two strings.
+
+        Parameters:
+            s1 (str): The first string.
+            s2 (str): The second string.
+
+        Returns:
+            int: The Levenshtein distance between the two strings.
+        """
+        if len(s1) < len(s2):
+            return self.__levenshtein_distance(s2, s1)
+
+        if len(s2) == 0:
+            return len(s1)
+
+        previous_row = range(len(s2) + 1)
+        for i, c1 in enumerate(s1):
+            current_row = [i + 1]
+            for j, c2 in enumerate(s2):
+                insertions = previous_row[j + 1] + 1
+                deletions = current_row[j] + 1
+                substitutions = previous_row[j] + (c1 != c2)
+                current_row.append(min(insertions, deletions, substitutions))
+            previous_row = current_row
+
+        return previous_row[-1]
+
+    def __verify_date(self, date, key):
+        """
+        Verifies if the given date matches the initialized date.
+
+        Parameters:
+            date (str): The date to be verified.
+
+        Returns:
+            bool: True if the dates match, False otherwise.
+        """
+        try:
+            parsed_date = self.__parse_date(date)
+            self.search_results[key] = self.date
+            return self.__parse_date(self.date) == parsed_date
+        except ValueError:
+            self.search_results[key] = 'No matches found'
+            return False
 
     def __parse_date(self, date_str):
         """
@@ -104,19 +167,3 @@ class Auditor:
                 continue
 
         raise ValueError(f"Formato de fecha no reconocido: {date_str}")
-
-    def __verify_date(self, date):
-        """
-        Verifies if the given date matches the initialized date.
-
-        Parameters:
-            date (str): The date to be verified.
-
-        Returns:
-            bool: True if the dates match, False otherwise.
-        """
-        try:
-            parsed_date = self.__parse_date(date)
-            return self.__parse_date(self.date) == parsed_date
-        except ValueError:
-            return False

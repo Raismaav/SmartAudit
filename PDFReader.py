@@ -37,7 +37,7 @@ class PDFReader:
             with open(self.file_path, 'rb') as file:
                 reader = PyPDF2.PdfFileReader(file)
                 self.text = self.extract_text(reader)
-                return self.text.upper()
+                return self.text
         except Exception as e:
             print(f'An error occurred: {e}')
             return None

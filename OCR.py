@@ -69,7 +69,7 @@ class OCR:
             print("No images to process.")
             return None
         self.text = self.ocr_core(self.__images)
-        return self.text.upper()
+        return self.text
 
     def is_readable(self):
         """
