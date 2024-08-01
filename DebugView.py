@@ -1,5 +1,6 @@
 import tkinter as tk
 from Auditor import Auditor
+from DataCleaner import DataCleaner
 
 class DebugView:
     """
@@ -50,6 +51,13 @@ class DebugView:
                 self.scan_widgets[index].delete(0, tk.END)
                 self.scan_widgets[index].insert(0, search_results[self.keys[index]])
 
+    def llenar(self):
+        clean = DataCleaner()
+        values = list(clean.get_data().values())
+        for index, value in enumerate(values):
+            self.entry_widgets[index].delete(0, tk.END)
+            self.entry_widgets[index].insert(0, value)
+
 
     def center_window(self, window, width, height):
         """
@@ -97,7 +105,7 @@ class DebugView:
         reference = tk.Entry(header_frame, bg=input_background, font=font)
         reference.grid(row=0, column=1, sticky="ew", padx=10)
 
-        search = tk.Button(header_frame, text="Buscar", width=10, font=font_button)
+        search = tk.Button(header_frame, text="Buscar", width=10, font=font_button, command=self.llenar)
         search.grid(row=0, column=2, sticky="ew", padx=10)
 
         verify_button = tk.Button(header_frame, text="Verificar", width=20, height=1, command=self.__verify_and_mark,
@@ -176,6 +184,5 @@ class DebugView:
                 check = tk.Checkbutton(frame_window, state=tk.DISABLED, bg=background_color)
                 check.grid(row=0, column=3, sticky="e")
                 self.check_widgets.append(check)
-
 
         forms.mainloop()

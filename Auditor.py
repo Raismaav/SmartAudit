@@ -62,7 +62,7 @@ class Auditor:
             return False
 
         # Find all words in the text
-        words = re.findall(r'\b\w+\b', self.text.upper())
+        words = re.findall(r'\b[\w\.\-]+\b', self.text.upper())
 
         # Find the closest match
         closest_word = None
@@ -80,8 +80,13 @@ class Auditor:
             self.search_results[key] = 'No matches found'
 
         # Check if the entry is a complete word in the text
-        pattern = r'\b' + re.escape(entry) + r'\b'
-        return bool(re.search(pattern, self.text.upper(), re.IGNORECASE))
+        pattern = r'(?<!\w)' + re.escape(entry) + r'(?!\w)'
+        match = re.search(pattern, self.text.upper(), re.IGNORECASE)
+        if match:
+            self.search_results[key] = match.group(0)
+            return True
+        else:
+            return False
 
     def __levenshtein_distance(self, s1, s2):
         """
