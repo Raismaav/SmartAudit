@@ -30,21 +30,27 @@ class Auditor:
         Audits the values in the provided dictionary against the text data.
 
         Parameters:
-            check_dict (dict): The dictionary containing the values to be audited.
+            check_dict (dict): The dictionary containing the values to be audited. The keys should be the names of the
+            entries, and the values should be the entries to be verified.
 
         Returns:
-            list of bool: A list of boolean values indicating the audit results for each entry.
+            dict: A dictionary with the same keys as `check_dict`, where the values are boolean indicating the audit
+            results for each entry. True if the entry is found as a complete word in the text or if the date matches,
+            False otherwise.
+
+        Raises:
+            ValueError: If `check_dict` is not a dictionary or if the text data is not initialized.
         """
         if not isinstance(check_dict, dict):
             raise ValueError("Parameter must be a dictionary.")
         if self.text is None:
             raise ValueError("Text data is not initialized.")
-        results = []
+        results = {}
         for key, value in check_dict.items():
             if key == "date":  # Special handling for the date entry.
-                results.append(self.__verify_date(value, key))
+                results[key] = self.__verify_date(value, key)
             else:  # Verification for text entries.
-                results.append(self.__verify_entry(value, key))
+                results[key] = self.__verify_entry(value, key)
         return results
 
     def __verify_entry(self, entry, key):
@@ -160,6 +166,7 @@ class Auditor:
             "%d %B %Y",  # DD Month YYYY (e.g., 13 May 2024)
             "%d-%b-%Y",  # DD-Mon-YYYY (e.g., 13-May-2024)
             "%b %d, %Y",  # Mon DD, YYYY (e.g., May 13, 2024)
+            "%b %d %Y",  # Mon DD, YYYY (e.g., May 13 2024)
             "%d %b %y",  # DD Mon YY (e.g., 13 May 24)
             "%d/%m/%y",  # DD/MM/YY
             "%m/%d/%y",  # MM/DD/YY

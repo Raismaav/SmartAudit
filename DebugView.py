@@ -41,7 +41,7 @@ class DebugView:
         entries = {label: entry.get().upper() for label, entry in zip(self.keys, self.entry_widgets)}
         results = self.auditor.audit_values_in_text(entries)
         search_results = self.auditor.search_results
-        for index, result in enumerate(results):
+        for index, result in enumerate(results.values()):
             if result:
                 self.check_widgets[index].select()
                 self.scan_widgets[index].delete(0, tk.END)
@@ -128,61 +128,5 @@ class DebugView:
             check = tk.Checkbutton(frame_window, state=tk.DISABLED, bg=background_color)
             check.grid(row=0, column=3, sticky="e")
             self.check_widgets.append(check)
-
-        def setup_ui(self):
-            """
-            Sets up the user interface for the DebugView window.
-
-            This method initializes the main window and its components, including labels, entry fields, and checkbuttons
-            for each label text provided. It also configures the window's appearance and layout.
-            """
-            forms = tk.Tk()
-            forms.title("Auditoría de remesas")
-            preferred_width = 610
-            preferred_height = 760
-            forms.rowconfigure(0, weight=1)
-            forms.columnconfigure(0, weight=1)
-            self.center_window(forms, preferred_width, preferred_height)
-
-            background_color = "#ececec"
-            background_color_frame = "#ff6b00"
-            input_background = "#ffffff"
-            font_button = ("Arial", 11)
-            font = ("Arial", 11)
-
-            # Create header frame
-            header_frame = tk.Frame(forms, bg=background_color_frame)
-            header_frame.grid(row=0, column=0, sticky="new")
-            header_frame.columnconfigure([0, 1, 2, 3], weight=1)
-
-            reference_label = tk.Label(header_frame, text="Referencia", bg=background_color_frame, fg="white",
-                                       font=font)
-            reference_label.grid(row=0, column=0, sticky="ew", padx=10)
-            reference = tk.Entry(header_frame, bg=input_background, font=font)
-            reference.grid(row=0, column=1, sticky="ew", padx=10)
-
-            search = tk.Button(header_frame, text="Buscar", width=10, font=font_button)
-            search.grid(row=0, column=2, sticky="ew", padx=10)
-
-            verify_button = tk.Button(header_frame, text="Verificar", width=20, height=1,
-                                      command=self.__verify_and_mark,
-                                      font=font_button)
-            verify_button.grid(row=0, column=3, sticky="ew", padx=10, pady=10)
-
-            for index, text in enumerate(self.label_texts):
-                frame_window = tk.Frame(forms, bg=background_color)
-                frame_window.grid(row=index + 1, column=0, sticky="ew", padx=5, pady=5)
-                frame_window.columnconfigure(1, weight=1)
-                label = tk.Label(frame_window, width=16, text=text, font=font)
-                label.grid(row=0, column=0, sticky="w")
-                entry = tk.Entry(frame_window, width=32, bg=input_background, font=font)
-                entry.grid(row=0, column=1, sticky="ew")
-                self.entry_widgets.append(entry)
-                scan = tk.Entry(frame_window, width=32, bg=input_background, font=font)
-                scan.grid(row=0, column=2, sticky="ew")
-                self.scan_widgets.append(scan)
-                check = tk.Checkbutton(frame_window, state=tk.DISABLED, bg=background_color)
-                check.grid(row=0, column=3, sticky="e")
-                self.check_widgets.append(check)
 
         forms.mainloop()

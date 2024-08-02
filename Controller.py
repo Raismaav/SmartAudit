@@ -52,6 +52,5 @@ class Controller:
         Processes the data file and initializes the DebugView.
         """
         reader = DataReader(self.file_path)
-        reader.process_file()
         auditor = Auditor(reader.get_text(), reader.get_date())
         DebugView(self.dict_texts, auditor)

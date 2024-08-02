@@ -10,14 +10,15 @@ class DataReader:
     based on the file extension, and extracting text from the file.
     """
 
-    def __init__(self, file_path):
+    def __init__(self, file_path=None):
         """
-        Initializes the FileController with the path to the file to be processed.
+        Initializes the DataReader with the path to the file to be processed.
 
-        :param file_path: The path to the file to be processed.
+        :param file_path: Optional; The path to the file to be processed. If not provided, uses the existing file_path attribute.
         """
         self.text = None
         self.file_path = file_path
+        self.process_file()
 
     def get_date(self):
         """
@@ -32,11 +33,20 @@ class DataReader:
         else:
             return None
 
-    def process_file(self):
+    def process_file(self, file_path=None):
         """
         Processes the file based on its type. Uses PDFReader for PDF files and OCR for image files.
         Prints the extracted text or an error message if the file is not readable.
+
+        :param file_path: Optional; The path to the file to be processed. If not provided, uses the existing file_path attribute.
         """
+        if file_path:
+            self.file_path = file_path
+
+        if not self.file_path:
+            print("No file path provided.")
+            return
+
         file_type = self.__determine_file_type()
         if file_type == '.pdf':
             pdf_reader = PDFReader(self.file_path)
@@ -46,7 +56,7 @@ class DataReader:
         elif file_type in ['.png', '.jpg', '.jpeg']:
             ocr_reader = OCR(self.file_path)
             self.text = ocr_reader.read_text()
-            if not ocr_reader.is_readable():
+            if not ocr_reader.is_readable:
                 self.__print_error()
         else:
             print("Unsupported file type.")
@@ -59,15 +69,6 @@ class DataReader:
         """
         return self.text
 
-    def __determine_file_type(self):
-        """
-        Determines the file type by checking the file extension.
-
-        :return: The file extension.
-        """
-        _, extension = os.path.splitext(self.file_path)
-        return extension
-
     def print_result(self):
         """
         Prints the extracted text from the file.
@@ -78,6 +79,14 @@ class DataReader:
         else:
             self.__print_error()
 
+    def __determine_file_type(self):
+        """
+        Determines the file type by checking the file extension.
+
+        :return: The file extension.
+        """
+        _, extension = os.path.splitext(self.file_path)
+        return extension
 
     def __print_error(self):
         """
