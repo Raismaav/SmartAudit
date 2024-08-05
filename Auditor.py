@@ -63,7 +63,7 @@ class Auditor:
         Returns:
             bool: True if the entry is found as a complete word in the text, False otherwise.
         """
-        if not entry:  # Check for empty string
+        if not entry or len(entry) == 1:  # Check for empty string or single character
             self.search_results[key] = 'No matches found'
             return False
 
