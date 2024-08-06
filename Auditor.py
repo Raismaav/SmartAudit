@@ -1,4 +1,5 @@
 from datetime import datetime
+from DataReader import DataReader
 import re
 
 class Auditor:
@@ -10,20 +11,57 @@ class Auditor:
         date (str): The date to be used for verification.
     """
 
-    def __init__(self, data, date):
+    def __init__(self, data=None, date=None, file_path=None):
         """
-        Initializes the Auditor with data and a date.
+        Initializes the Auditor with data and a date or a file path.
 
         Parameters:
-            data (str): The data to be audited. Can be a string or a dictionary.
-            date (str): The date to be used for verification.
+            data (str, optional): The data to be audited. Can be a string or a dictionary.
+            date (str, optional): The date to be used for verification.
+            file_path (str, optional): The path to the file containing the data and date.
         """
         self.search_results = {}
-        if isinstance(data, str):
-            self.text = data
+
+        if file_path:
+            reader = DataReader(file_path)
+            self.text = reader.get_text()
+            self.date = reader.get_date()
+        elif data and date:
+            if isinstance(data, str):
+                self.text = data
+            else:
+                raise ValueError("Invalid data type. Expected str")
+            self.date = date
         else:
-            raise ValueError("Invalid data type. Expected str")
-        self.date = date
+            raise ValueError("Either file_path or both data and date must be provided")
+
+    def audit_values_in_dict(self, check_dict, correct_dict):
+        """
+        Audits the values in the provided dictionary against the correct values dictionary.
+
+        Parameters:
+            check_dict (dict): The dictionary containing the values to be audited. The keys should be the names of the
+            entries, and the values should be the entries to be verified.
+            correct_dict (dict): The dictionary containing the correct values. The keys should be the same as in check_dict.
+
+        Returns:
+            dict: A dictionary with the same keys as `check_dict`, where the values are boolean indicating the audit
+            results for each entry. True if the entry matches the correct value, False otherwise.
+
+        Raises:
+            ValueError: If `check_dict` or `correct_dict` is not a dictionary.
+        """
+        if not isinstance(check_dict, dict) or not isinstance(correct_dict, dict):
+            raise ValueError("Both parameters must be dictionaries.")
+
+        results = {}
+        for key, value in check_dict.items():
+            if key == "date":  # Special handling for the date entry.
+                results[key] = self.__verify_date(value, key, correcte_date=correct_dict[key])
+            else:  # Verification for text entries.
+                results[key] = self.__verify_entry(value, key, text=correct_dict[key])
+
+        return results
 
     def audit_values_in_text(self, check_dict):
         """
@@ -51,24 +89,30 @@ class Auditor:
                 results[key] = self.__verify_date(value, key)
             else:  # Verification for text entries.
                 results[key] = self.__verify_entry(value, key)
+
         return results
 
-    def __verify_entry(self, entry, key):
+    def __verify_entry(self, entry, key, text=None):
         """
         Verifies if the entry is a complete word in the given text and prints the closest complete word.
 
         Parameters:
             entry (str): The entry to be verified.
+            key (str): The key associated with the entry.
+            text (str, optional): The text to be used for verification. If not provided, uses the initialized text.
 
         Returns:
             bool: True if the entry is found as a complete word in the text, False otherwise.
         """
+        if not text:
+            text = self.text
+
         if not entry or len(entry) == 1:  # Check for empty string or single character
             self.search_results[key] = 'No matches found'
             return False
 
         # Find all words in the text
-        words = re.findall(r'\b[\w\.\-]+\b', self.text.upper())
+        words = re.findall(r'\b[\w\.\-]+\b', text.upper())
 
         # Find the closest match
         closest_word = None
@@ -87,7 +131,7 @@ class Auditor:
 
         # Check if the entry is a complete word in the text
         pattern = r'(?<!\w)' + re.escape(entry) + r'(?!\w)'
-        match = re.search(pattern, self.text.upper(), re.IGNORECASE)
+        match = re.search(pattern, text.upper(), re.IGNORECASE)
         if match:
             self.search_results[key] = match.group(0)
             return True
@@ -123,7 +167,7 @@ class Auditor:
 
         return previous_row[-1]
 
-    def __verify_date(self, date, key):
+    def __verify_date(self, date, key, correct_date=None):
         """
         Verifies if the given date matches the initialized date.
 
@@ -133,10 +177,12 @@ class Auditor:
         Returns:
             bool: True if the dates match, False otherwise.
         """
+        if not correct_date:
+            correct_date = self.date
         try:
             parsed_date = self.__parse_date(date)
-            self.search_results[key] = self.date
-            return self.__parse_date(self.date) == parsed_date
+            self.search_results[key] = correct_date
+            return self.__parse_date(correct_date) == parsed_date
         except ValueError:
             self.search_results[key] = 'No matches found'
             return False
