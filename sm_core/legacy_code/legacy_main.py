@@ -2,7 +2,7 @@
 import cv2
 import pytesseract
 import platform
-from legacy_code import debug_interface
+from sm_core.legacy_code import debug_interface
 import re
 
 # Configura el path de tesseract en Windows
