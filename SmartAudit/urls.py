@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from smart_audit_api.views import PruebaListView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('pruebas/', PruebaListView.as_view(), name='prueba-list'),
 ]

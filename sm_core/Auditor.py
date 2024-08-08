@@ -57,7 +57,7 @@ class Auditor:
         results = {}
         for key, value in check_dict.items():
             if key == "date":  # Special handling for the date entry.
-                results[key] = self.__verify_date(value, key, correcte_date=correct_dict[key])
+                results[key] = self.__verify_date(value, key, correct_date=correct_dict[key])
             else:  # Verification for text entries.
                 results[key] = self.__verify_entry(value, key, text=correct_dict[key])
 
