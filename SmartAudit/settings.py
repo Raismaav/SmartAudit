@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'smart_audit_api',
+    'sm_core',
 ]
 
 MIDDLEWARE = [

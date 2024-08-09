@@ -1,9 +1,21 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PruebaSerializer
+from .serializers import AuditSerializer
+from .serializers import TextSerializer
 
-class PruebaListView(APIView):
+
+class TextAPIView(APIView):
+    def get(self, request):
+        dict_texts = {
+            "text": "Texto largo"
+        }
+        serializer = TextSerializer(data=dict_texts)
+        if serializer.is_valid():
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+class AuditAPIView(APIView):
     def get(self, request):
         dict_texts = {
             "date": "Fecha de presentación",
@@ -28,7 +40,7 @@ class PruebaListView(APIView):
             "total_value": "Valor total",
             "incoterm": "Incoterm"
         }
-        serializer = PruebaSerializer(data=dict_texts)
+        serializer = AuditSerializer(data=dict_texts)
         if serializer.is_valid():
             return Response(serializer.data)
         return Response(serializer.errors)

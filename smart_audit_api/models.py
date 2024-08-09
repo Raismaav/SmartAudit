@@ -4,7 +4,12 @@ from django.db import models
 # models.py
 from django.db import models
 
-class Prueba(models.Model):
+
+class TextModel(models.Model):
+    text = models.TextField()
+
+
+class AuditModel(models.Model):
     date = models.CharField(max_length=255)
     client = models.CharField(max_length=255)
     address = models.CharField(max_length=255)

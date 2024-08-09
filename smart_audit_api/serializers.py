@@ -1,8 +1,15 @@
 # smart_audit_api/serializers.py
 from rest_framework import serializers
-from .models import Prueba
+from .models import AuditModel
+from .models import TextModel
 
-class PruebaSerializer(serializers.ModelSerializer):
+
+class TextSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Prueba
+        model = TextModel
+        fields = '__all__'
+
+class AuditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuditModel
         fields = '__all__'

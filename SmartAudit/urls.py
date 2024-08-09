@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from smart_audit_api.views import PruebaListView
-
+from smart_audit_api.views import AuditAPIView
+from smart_audit_api.views import TextAPIView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pruebas/', PruebaListView.as_view(), name='prueba-list'),
+    path('pruebas/', AuditAPIView.as_view(), name='audit-api'),
+    path('text/', TextAPIView.as_view(), name='text-api'),
 ]
