@@ -1,5 +1,6 @@
 import PyPDF2
 
+
 class PDFReader:
     """
     A class to read and extract text from PDF files.

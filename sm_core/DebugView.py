@@ -1,6 +1,7 @@
 import tkinter as tk
-from Auditor import Auditor
-from DataCleaner import DataCleaner
+
+from sm_core.Auditor import Auditor
+
 
 class DebugView:
     """

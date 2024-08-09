@@ -3,12 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import AuditSerializer
 from .serializers import TextSerializer
-
+from sm_core.DataReader import DataReader
 
 class TextAPIView(APIView):
     def get(self, request):
         dict_texts = {
-            "text": "Texto largo"
+            "text": "Texto",
         }
         serializer = TextSerializer(data=dict_texts)
         if serializer.is_valid():

@@ -1,8 +1,7 @@
-from PDFReader import PDFReader
-from OCR import OCR
+from sm_core.OCR import OCR
+from sm_core.PDFReader import PDFReader
 import re
 import os
-
 
 class DataReader:
     """
@@ -17,7 +16,7 @@ class DataReader:
         :param file_path: Optional; The path to the file to be processed. If not provided, uses the existing file_path attribute.
         """
         self.text = None
-        self.file_path = file_path
+        self.file_path = f'files/{file_path}'
         self.process_file()
 
     def get_date(self):
